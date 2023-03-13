@@ -7,31 +7,29 @@ func main() {
 }
 
 func permute(nums []int) [][]int {
+	var ans [][]int
 	n := len(nums)
-	ans := [][]int{}
-	vis := make([]int, n)
-	temp := []int{}
-
-	var dfs func(int)
-	dfs = func(cur int) {
-		if cur == n {
+	visited := make([]bool, n)
+	var backtrack func(next int, path []int)
+	backtrack = func(next int, path []int) {
+		if next == n {
 			perm := make([]int, n)
-			copy(perm, temp)
+			copy(perm, path)
 			ans = append(ans, perm)
 			return
 		}
-		for i := 0; i < n; i++ {
-			if vis[i] == 0 {
-				temp = append(temp, nums[i])
-				vis[i] = 1
-				dfs(cur + 1)
-				vis[i] = 0
-				temp = temp[:len(temp)-1]
+		for i, val := range nums {
+			if !visited[i] {
+				path = append(path, val)
+				visited[i] = true
+				backtrack(next+1, path)
+				visited[i] = false
+				path = path[:len(path)-1]
 			}
 		}
 	}
 
-	dfs(0)
+	backtrack(0, []int{})
 
 	return ans
 }

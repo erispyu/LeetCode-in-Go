@@ -14,8 +14,8 @@ func permuteUnique(nums []int) [][]int {
 	n := len(nums)
 	vis := make([]bool, n)
 
-	ans := [][]int{}
-	temp := []int{}
+	var ans [][]int
+	var temp []int
 	var backtrack func(int)
 
 	backtrack = func(cur int) {
