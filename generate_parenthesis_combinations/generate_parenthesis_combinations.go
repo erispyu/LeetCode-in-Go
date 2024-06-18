@@ -20,10 +20,11 @@ func generateParenthesisCombinations(n int) []string {
 			results = append(results, path)
 			return
 		}
-
+		// add left parenthesis at first
 		if left < n {
 			backtrack(left+1, right, path+"(")
 		}
+		// add right parenthesis only if there are more left parenthesis waiting to be closed
 		if right < left {
 			backtrack(left, right+1, path+")")
 		}
