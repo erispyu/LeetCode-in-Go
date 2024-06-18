@@ -19,22 +19,20 @@ func lengthOfLongestSubstring(s string) int {
 				delete(indexMap, s[left])
 				left++
 			}
-			indexMap[s[right]] = right
-		} else {
-			indexMap[s[right]] = right
 		}
+		indexMap[s[right]] = right
 		right++
 	}
 	ans = max(ans, right-left)
 	return ans
 }
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
+// func max(a, b int) int {
+// 	if a > b {
+// 		return a
+// 	}
+// 	return b
+// }
 
 func main() {
 	testCases := []string{
