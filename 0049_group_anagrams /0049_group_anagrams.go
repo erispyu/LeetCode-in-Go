@@ -3,35 +3,48 @@ package main
 import (
 	"fmt"
 	"sort"
+	"strings"
 )
 
-func groupAnagrams(strs []string) [][]string {
-	record := make(map[string][]string, 0)
-	for _, str := range strs {
-		s := []byte(str)
-		sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
-		sorted := string(s)
-		record[sorted] = append(record[sorted], str)
+func groupAnagrams(strListToGroup []string) [][]string {
+	record := make(map[string][]string)
+	for _, s := range strListToGroup {
+		k := getKey(s)
+		anagrams, ok := record[k]
+		if !ok {
+			record[k] = []string{s}
+		} else {
+			record[k] = append(anagrams, s)
+		}
 	}
 	ans := make([][]string, 0, len(record))
-	for _, group := range record {
-		ans = append(ans, group)
+	for _, anagrams := range record {
+		ans = append(ans, anagrams)
 	}
 	return ans
 }
 
-type PayIndex struct {
-	SourceId    uint64
-	ReferenceId uint64
+func getKey(str string) string {
+	s := []byte(str)
+	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
+	return string(s)
+}
+
+func getKey2(str string) string {
+	cl := strings.Split(str, "")
+	sort.Strings(cl)
+	return strings.Join(cl, "")
+}
+
+func getKeyAsArray(str string) [26]int {
+	key := [26]int{}
+	for _, c := range str {
+		key[c-'a']++
+	}
+	return key
 }
 
 func main() {
-	strs := []string{"eat", "tea", "tan", "ate", "nat", "bat"}
-	fmt.Println(groupAnagrams(strs))
-	var err error
-	fmt.Println(err)
-	fmt.Println(err == nil)
-	var payIndex *PayIndex
-	fmt.Println(payIndex)
-	fmt.Println(payIndex == nil)
+	strListToGroup := []string{"eat", "tea", "tan", "ate", "nat", "bat"}
+	fmt.Println(groupAnagrams(strListToGroup))
 }

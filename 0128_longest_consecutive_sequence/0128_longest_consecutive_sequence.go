@@ -29,28 +29,25 @@ func longestConsecutive(nums []int) int {
 	if len(nums) <= 1 {
 		return len(nums)
 	}
-	cnt := map[int]int{}
-	for _, num := range nums {
-		cnt[num]++
+	record := make(map[int]bool)
+	for _, val := range nums {
+		record[val] = true
 	}
-	longest := 0
-	for num := range cnt {
-		if cnt[num-1] >= 1 {
-			// not the start of a seq
+	ans := 1
+	for val, _ := range record {
+		if record[val-1] {
 			continue
 		}
-		currNum := num
-		currLen := 1
-		for cnt[currNum+1] >= 1 {
-			currNum++
-			currLen++
+		cnt := 0
+		for record[val] {
+			cnt++
+			val++
 		}
-		// seq ended
-		if currLen > longest {
-			longest = currLen
+		if cnt > ans {
+			ans = cnt
 		}
 	}
-	return longest
+	return ans
 }
 
 func main() {
