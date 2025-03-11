@@ -4,8 +4,8 @@ func maxArea(height []int) int {
 	left, right := 0, len(height)-1
 	ans := 0
 	for left <= right {
-		curr := (right - left) * min(height[left], height[right])
-		ans = max(ans, curr)
+		curr := (right - left) * minVal(height[left], height[right])
+		ans = maxVal(ans, curr)
 		if height[left] < height[right] {
 			left++
 		} else {
@@ -15,14 +15,14 @@ func maxArea(height []int) int {
 	return ans
 }
 
-func max(a, b int) int {
+func maxVal(a, b int) int {
 	if a > b {
 		return a
 	}
 	return b
 }
 
-func min(a, b int) int {
+func minVal(a, b int) int {
 	if a < b {
 		return a
 	}

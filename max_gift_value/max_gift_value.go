@@ -1,8 +1,8 @@
 package main
 
-//在一个m*n的棋盘的每一格都放有一个礼物、每个礼物都有一定的价值（价值大于0）。
-//你可以从棋盘的左上角开始拿格子里的礼物，并每次向右或者向下移动一格、直到到达棋盘的右下角。
-//给定一个棋盘及其上面的礼物的价值，请计算你最多能拿到多少价值的礼物？
+// 在一个m*n的棋盘的每一格都放有一个礼物、每个礼物都有一定的价值（价值大于0）。
+// 你可以从棋盘的左上角开始拿格子里的礼物，并每次向右或者向下移动一格、直到到达棋盘的右下角。
+// 给定一个棋盘及其上面的礼物的价值，请计算你最多能拿到多少价值的礼物？
 
 func maxValueDP(grid [][]int) int {
 	m, n := len(grid), len(grid[0])
@@ -19,7 +19,7 @@ func maxValueDP(grid [][]int) int {
 			} else if j == 0 {
 				dp[i][j] = dp[i-1][j] + grid[i][j]
 			} else {
-				dp[i][j] = max(dp[i-1][j], dp[i][j-1]) + grid[i][j]
+				dp[i][j] = maxVal(dp[i-1][j], dp[i][j-1]) + grid[i][j]
 			}
 		}
 	}
@@ -32,7 +32,7 @@ func maxValueDFS(grid [][]int) int {
 	var dfs func(r, c, val int)
 	dfs = func(r, c, val int) {
 		if r == m-1 && c == n-1 {
-			ans = max(ans, val+grid[r][c])
+			ans = maxVal(ans, val+grid[r][c])
 			return
 		}
 
@@ -48,7 +48,7 @@ func maxValueDFS(grid [][]int) int {
 	return ans
 }
 
-func max(x, y int) int {
+func maxVal(x, y int) int {
 	if x > y {
 		return x
 	}
