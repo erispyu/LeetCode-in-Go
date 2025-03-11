@@ -53,36 +53,44 @@ func binarySearch(nums []int, left, right, val int) int {
 	return binarySearch(nums, mid+1, right, val)
 }
 
-func threeSumOfficialSolSpeedUp(nums []int) (ans [][]int) {
+func threeSumOfficialSolSpeedUp(nums []int) [][]int {
 	sort.Ints(nums)
 	n := len(nums)
-	for i, x := range nums[:n-2] {
-		if i > 0 && x == nums[i-1] { // 跳过重复数字
+	ans := make([][]int, 0)
+	if n < 3 {
+		return ans
+	}
+	for i, _ := range nums {
+		// i need to be the first of it's value
+		if i > 0 && nums[i] == nums[i-1] {
 			continue
 		}
-		if x+nums[i+1]+nums[i+2] > 0 { // 优化一: 如果当前数加上最小的2个数之和大于0，当前数不可能再有解
-			break
+		if i >= n-2 {
+			continue
 		}
-		if x+nums[n-2]+nums[n-1] < 0 { // 优化二: 如果当前数加上最大的2个数之和小于0，当前数不可能再有解
+		if nums[i]+nums[i+1]+nums[i+2] > 0 {
+			continue
+		}
+		if nums[i]+nums[n-2]+nums[n-1] < 0 {
 			continue
 		}
 		j, k := i+1, n-1
 		for j < k {
-			s := x + nums[j] + nums[k]
+			s := nums[i] + nums[j] + nums[k]
 			if s > 0 {
 				k--
 			} else if s < 0 {
 				j++
 			} else {
-				ans = append(ans, []int{x, nums[j], nums[k]})
+				ans = append(ans, []int{nums[i], nums[j], nums[k]}) // record ans
 				for j++; j < k && nums[j] == nums[j-1]; j++ {
-				} // 跳过重复数字
+				} // move j to next value's first position
 				for k--; k > j && nums[k] == nums[k+1]; k-- {
-				} // 跳过重复数字
+				} // move k to previous value's last position
 			}
 		}
 	}
-	return
+	return ans
 }
 
 func main() {
@@ -93,5 +101,5 @@ func main() {
 	nums = []int{0, 0, 0}
 	fmt.Println(threeSum(nums))
 	nums = []int{-4, -2, -2, -2, 0, 1, 2, 2, 2, 3, 3, 4, 4, 6, 6}
-	fmt.Println(threeSum(nums))
+	fmt.Println(threeSumOfficialSolSpeedUp(nums))
 }
