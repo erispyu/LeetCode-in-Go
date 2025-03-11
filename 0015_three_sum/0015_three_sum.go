@@ -60,10 +60,10 @@ func threeSumOfficialSolSpeedUp(nums []int) (ans [][]int) {
 		if i > 0 && x == nums[i-1] { // 跳过重复数字
 			continue
 		}
-		if x+nums[i+1]+nums[i+2] > 0 { // 优化一
+		if x+nums[i+1]+nums[i+2] > 0 { // 优化一: 如果当前数加上最小的2个数之和大于0，当前数不可能再有解
 			break
 		}
-		if x+nums[n-2]+nums[n-1] < 0 { // 优化二
+		if x+nums[n-2]+nums[n-1] < 0 { // 优化二: 如果当前数加上最大的2个数之和小于0，当前数不可能再有解
 			continue
 		}
 		j, k := i+1, n-1
