@@ -27,12 +27,27 @@ func lengthOfLongestSubstring(s string) int {
 	return ans
 }
 
-// func max(a, b int) int {
-// 	if a > b {
-// 		return a
-// 	}
-// 	return b
-// }
+func lengthOfLongestSubstringEnhance(s string) int {
+	if len(s) == 0 {
+		return 0
+	}
+	indexMap := map[byte]int{}
+	left, right, n := 0, 1, len(s)
+	indexMap[s[left]] = left
+	ans := 0
+	for right < n {
+		pre, ok := indexMap[s[right]]
+		if ok {
+			ans = max(ans, right-left)
+			// 不需要一个个去清除，map里维护的是元素最后一次出现的位置，覆盖就好
+			left = max(left, pre+1)
+		}
+		indexMap[s[right]] = right
+		right++
+	}
+	ans = max(ans, right-left) // 遍历完，还要再算一次right-left，这是一路遍历到末尾的情况
+	return ans
+}
 
 func main() {
 	testCases := []string{

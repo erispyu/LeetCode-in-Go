@@ -2,6 +2,59 @@ package main
 
 import "fmt"
 
+func trapDP(height []int) int {
+	n := len(height)
+	leftMax := make([]int, n)
+	leftMax[0] = height[0]
+	for i := 1; i < n; i++ {
+		leftMax[i] = maxVal(leftMax[i-1], height[i])
+	}
+	rightMax := make([]int, n)
+	rightMax[n-1] = height[n-1]
+	for i := n - 2; i >= 0; i-- {
+		rightMax[i] = maxVal(rightMax[i+1], height[i])
+	}
+
+	ans := 0
+	for i, h := range height {
+		ans += minVal(leftMax[i], rightMax[i]) - h
+	}
+	return ans
+}
+
+func trapMonotoneStack(height []int) (ans int) {
+	stack := []int{}
+	for i, h := range height {
+		for len(stack) > 0 && h > height[stack[len(stack)-1]] {
+			top := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if len(stack) == 0 {
+				break
+			}
+			left := stack[len(stack)-1]
+			curWidth := i - left - 1
+			curHeight := minVal(height[left], h) - height[top]
+			ans += curWidth * curHeight
+		}
+		stack = append(stack, i)
+	}
+	return
+}
+
+func minVal(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func maxVal(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
 func trap(height []int) int {
 	if len(height) == 0 {
 		return 0
@@ -38,11 +91,8 @@ func main() {
 		{[]int{4, 2, 0, 3, 2, 5}, 9},
 	}
 	for _, tc := range testCases {
-		got := trap(tc.height)
-		if got != tc.want {
-			fmt.Printf("failed: %v, %d, %d\n", tc.height, got, tc.want)
-		} else {
-			fmt.Printf("passed: %v, %d\n", tc.height, got)
-		}
+		fmt.Println(trap(tc.height) == tc.want)
+		fmt.Println(trapDP(tc.height) == tc.want)
+		fmt.Println(trapMonotoneStack(tc.height) == tc.want)
 	}
 }
