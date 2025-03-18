@@ -9,7 +9,27 @@ type TreeNode struct {
 }
 
 func levelOrder(root *TreeNode) [][]int {
-	return nil
+	if root == nil {
+		return nil
+	}
+	var ans [][]int
+	currLevel := []*TreeNode{root}
+	for currLevel != nil {
+		var level []int
+		var nextLevel []*TreeNode
+		for _, node := range currLevel {
+			level = append(level, node.Val)
+			if node.Left != nil {
+				nextLevel = append(nextLevel, node.Left)
+			}
+			if node.Right != nil {
+				nextLevel = append(nextLevel, node.Right)
+			}
+		}
+		ans = append(ans, level)
+		currLevel = nextLevel
+	}
+	return ans
 }
 
 func main() {
