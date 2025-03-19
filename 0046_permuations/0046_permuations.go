@@ -7,12 +7,13 @@ func main() {
 }
 
 func permute(nums []int) [][]int {
-	var ans [][]int
 	n := len(nums)
+	var ans [][]int
 	visited := make([]bool, n)
-	var backtrack func(next int, path []int)
-	backtrack = func(next int, path []int) {
-		if next == n {
+	var backtrack func(path []int)
+	backtrack = func(path []int) {
+		pathLen := len(path) // use the length of current path to record progress, no need for another param
+		if pathLen == n {
 			perm := make([]int, n)
 			copy(perm, path)
 			ans = append(ans, perm)
@@ -20,16 +21,16 @@ func permute(nums []int) [][]int {
 		}
 		for i, val := range nums {
 			if !visited[i] {
-				path = append(path, val)
+				// forward
 				visited[i] = true
-				backtrack(next+1, path)
+				path = append(path, val)
+				backtrack(path)
+				// backward
 				visited[i] = false
-				path = path[:len(path)-1]
+				path = path[:len(path)-1] // remove nums[i] from path
 			}
 		}
 	}
-
-	backtrack(0, []int{})
-
+	backtrack([]int{})
 	return ans
 }

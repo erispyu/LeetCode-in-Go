@@ -2,15 +2,11 @@ package main
 
 import "fmt"
 
-func main() {
-	fmt.Println(allLengthPermute([]int{1, 2, 3}))
-}
-
 func allLengthPermute(nums []int) [][]int {
 	n := len(nums)
-	ans := [][]int{}
+	var ans [][]int
 	vis := make([]int, n)
-	temp := []int{}
+	var temp []int
 
 	var dfs func(cur, k int)
 	dfs = func(cur, k int) {
@@ -36,4 +32,8 @@ func allLengthPermute(nums []int) [][]int {
 	}
 
 	return ans
+}
+
+func main() {
+	fmt.Println(allLengthPermute([]int{1, 2, 3}))
 }
