@@ -28,6 +28,17 @@ func maxSubArray(nums []int) int {
 	return crossSum
 }
 
+func maxSubArrayDp(nums []int) int {
+	n := len(nums)
+	opt0, opt1 := 0, nums[0]
+	ans := opt1
+	for i := 1; i < n; i++ {
+		opt0, opt1 = max(opt0, opt1), max(nums[i], opt1+nums[i])
+		ans = max(ans, opt1)
+	}
+	return ans
+}
+
 func maxCross(nums []int, mid int) int {
 	n := len(nums)
 	if mid >= n {
@@ -59,6 +70,7 @@ func main() {
 		{0},
 	}
 	for _, testCase := range testCases {
-		fmt.Println(testCase, maxSubArray(testCase))
+		// fmt.Println(testCase, maxSubArray(testCase))
+		fmt.Println(testCase, maxSubArrayDp(testCase))
 	}
 }
