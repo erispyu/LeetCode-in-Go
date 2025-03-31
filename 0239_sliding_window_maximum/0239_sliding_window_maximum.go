@@ -54,6 +54,31 @@ type TestCase struct {
 	ans  []int
 }
 
+func maxSlidingWindowDequeue(nums []int, k int) []int {
+	var result, q []int // q: decrease, record index
+	n := len(nums)
+	for i := 0; i < n; i++ {
+		// remove headers
+		if len(q) > 0 && q[0] <= i-k {
+			q = q[1:]
+		}
+
+		// remove small vals
+		for len(q) > 0 && nums[q[len(q)-1]] < nums[i] {
+			q = q[:len(q)-1]
+		}
+
+		// append new val
+		q = append(q, i)
+
+		// record
+		if i-k+1 >= 0 {
+			result = append(result, nums[q[0]])
+		}
+	}
+	return result
+}
+
 func main() {
 	testCases := []TestCase{
 		{[]int{1, 3, -1, -3, 5, 3, 6, 7}, 3, []int{3, 3, 5, 5, 6, 7}},
@@ -61,7 +86,12 @@ func main() {
 		{[]int{1}, 1, []int{1}},
 	}
 	for _, testCase := range testCases {
+		fmt.Println(testCase.nums)
+
 		ans := maxSlidingWindow(testCase.nums, testCase.k)
-		fmt.Println(testCase, ans)
+		fmt.Println("Heap: ", ans)
+
+		ans = maxSlidingWindowDequeue(testCase.nums, testCase.k)
+		fmt.Println("Dequeue: ", ans)
 	}
 }
